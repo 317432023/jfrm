@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.soaringloong</groupId>
+        <artifactId>jfrm-framework</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>jfrm-spring-boot-starter-test</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.soaringloong</groupId>
+            <artifactId>jfrm-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.soaringloong</groupId>
+            <artifactId>jfrm-spring-boot-starter-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.soaringloong</groupId>
+            <artifactId>jfrm-spring-boot-starter-mybatis</artifactId>
+        </dependency>
+
+        <!-- Test 测试相关 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId> <!-- 单元测试，我们采用 H2 作为数据库 -->
+            <artifactId>h2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.fppt</groupId> <!-- 单元测试，我们采用内嵌的 Redis 数据库 -->
+            <artifactId>jedis-mock</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.co.jemos.podam</groupId> <!-- Java 对象随机数填充器 -->
+            <artifactId>podam</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

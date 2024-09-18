@@ -1,0 +1,2 @@
+com.soaringloong.jfrm.framework.redis.config.JFrmRedisAutoConfiguration
+com.soaringloong.jfrm.framework.redis.config.JFrmCacheAutoConfiguration

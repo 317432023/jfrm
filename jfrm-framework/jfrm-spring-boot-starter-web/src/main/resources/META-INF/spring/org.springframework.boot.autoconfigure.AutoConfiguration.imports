@@ -1,0 +1,4 @@
+com.soaringloong.jfrm.framework.jackson.config.JFrmJacksonAutoConfiguration
+com.soaringloong.jfrm.framework.swagger.config.JFrmSwaggerAutoConfiguration
+com.soaringloong.jfrm.framework.web.config.WebMvcStringTrimAutoConfiguration
+com.soaringloong.jfrm.framework.web.config.JFrmWebAutoConfiguration

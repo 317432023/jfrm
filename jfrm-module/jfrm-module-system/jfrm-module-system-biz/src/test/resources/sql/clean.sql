@@ -1,0 +1,16 @@
+DELETE FROM "system_tenant";
+DELETE FROM "system_dept";
+DELETE FROM "system_role";
+DELETE FROM "system_users";
+DELETE FROM "system_user_role";
+-- DELETE FROM "sys_menu";
+-- DELETE FROM "sys_role_menu";
+-- DELETE FROM "sys_dict_type";
+-- DELETE FROM "sys_dict_data";
+-- DELETE FROM "sys_post";
+-- DELETE FROM "sys_user_post";
+DELETE FROM "system_oauth2_client";
+DELETE FROM "system_oauth2_approve";
+DELETE FROM "system_oauth2_access_token";
+DELETE FROM "system_oauth2_refresh_token";
+DELETE FROM "system_oauth2_code";

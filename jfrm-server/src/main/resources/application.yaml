@@ -1,0 +1,125 @@
+--- ### 容器 ###
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  undertow:
+    max-http-post-size: -1 # HTTP post内容的最大大小。当值为-1时，默认值为大小是无限的
+    accesslog:
+      dir: logs
+      pattern: common
+      prefix: access_log
+      suffix: log
+    buffer-size: 1024 # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理。默认为 JVM 可用的最大空间(每块buffer的空间大小,越小的空间被利用越充分，不要设置太大，以免影响其他应用，合适即可)
+    direct-buffers: true # 是否分配的直接内存(NIO直接分配的堆外内存)
+    threads:
+      io: 4 # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置为可用的CPU 核数(不要设置过大，如果过大，启动项目会报错：打开文件数过多)
+      worker: 4 # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载，默认值是IO线程数*8
+
+--- ### Spring ###
+spring:
+  application:
+    name: jfrm
+  profiles:
+    active: local
+  main:
+    allow-circular-references: true # 允许循环依赖，因为项目是三层架构，无法避免这个情况。
+  output:
+    ansi:
+      enabled: always
+  # Servlet 配置
+  servlet:
+    # 文件上传相关配置项
+    multipart:
+      max-file-size: 16MB # 单个文件大小
+      max-request-size: 32MB # 设置总上传的文件大小
+
+  # Cache 配置项
+  cache:
+    type: REDIS
+    redis:
+      time-to-live: 1h # 设置过期时间为 1 小时
+  # Spring Data Redis 配置
+  data:
+    redis:
+      repositories:
+        enabled: false # 项目未使用到 Spring Data Redis 的 Repository，所以直接禁用，保证启动速度
+
+--- ### MyBatisPlus ##
+mybatis-plus:
+  typeAliasesPackage: ${jfrm.info.base-package}.module.*.dal.dataobject # 配置扫描实体
+  mapperLocations: classpath*:mapper/**/*Mapper.xml # 配置扫描mapper.xml文件路径
+  configuration:
+    map-underscore-to-camel-case: true # 默认true
+  global-config:
+    banner: false
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+    enable-sql-runner: true
+
+--- ### 文档 ###
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+  default-flat-param-object: true # 参见 https://doc.xiaominfo.com/docs/faq/v4/knife4j-parameterobject-flat-param 文档
+
+knife4j: # since v2.0.6, 用以替代 @EnableKnife4j
+  enable: true # 是否开启增强属性，默认false
+  documents:
+    - group: 4.5.0版本 # 所属分组
+      name: 接口签名 # 类似于接口中的tag,对于自定义文档的分组
+      locations: classpath:md/* # markdown文件路径,可以是一个文件夹(classpath:markdowns/*)，也可以是单个文件(classpath:md/sign.md)
+  setting:
+    language: zh-CN # Ui默认显示语言,目前主要有两种:中文(zh-CN)、英文(en-US)。默认zh-CN
+  production: false # 是否开启生产环境保护策略，默认false
+  basic:
+    enable: true # 对Knife4j提供的资源提供BasicHttp校验,保护文档。默认false
+    username: test
+    password: 123123
+
+--- ### 自定义 ###
+jfrm:
+  info:
+    version: 1.0.1-snapshot
+    base-package: com.soaringloong.jfrm
+    mapper-package: ${jfrm.info.base-package},com.cmpt.**.mapper # 该包目录将用于 MyBatis Mapper 扫描
+  mybatis-plus:
+    pagination:
+      enabled: true # 开启分页
+    optimistic:
+      enabled: true # 开启乐观锁
+  cache:
+    redisScanBatchSize: 30
+  web:
+    member-api:
+      prefix: /member-api
+      controller: com.**.controller.member.**
+    admin-api:
+      prefix: /admin-api
+      controller: com.**.controller.admin.**
+    admin-ui:
+      url: http://localhost:${server.port} # Admin 管理后台 UI 的地址
+    serial-write-timestamp: false # 日期是否序列化为时间戳
+    filter:
+      cors: true # 开启全局跨域过滤器
+  swagger: # 仅当 springdoc.api-docs.enabled 开启时有效
+    title: JFRM快速开发平台
+    description: 提供管理后台、会员 的所有功能
+    version: ${jfrm.info.version}
+    url: ${jfrm.web.admin-ui.url}
+    email: noname@example.com
+    license: MIT
+    license-url: https://localhost:${server.port}/LICENSE
+
+config:
+  setting: jfrm-server/src/main/resources/setting.properties # 这种格式仅在Idea下运行时才能找到正确目录

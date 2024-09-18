@@ -1,0 +1,124 @@
+spring:
+  # Redis 配置。Redisson 默认的配置足够使用，一般不需要进行调优
+  redis:
+    host: 127.0.0.1 # 地址
+    port: 6379 # 端口
+    database: 0 # 数据库索引
+    #password: dev # 密码，建议生产环境开启
+    timeout: 10000 #连接超时时间（毫秒）
+
+    # 如果使用的 jedis 则将lettuce 改成 jedis 即可
+    lettuce:
+      pool:
+        enabled: true
+        max-active: 8 # 最大连接数（使用负值表示没有限制）默认 8
+        max-wait: -1 # 最大阻塞等待时间（使用负值表示没有限制）默认 -1
+        max-idle: 8 # 最大空闲连接 默认 8
+        min-idle: 0 # 最小空闲连接 默认 0
+
+  # 数据源
+  datasource:
+    #url: jdbc:mysql://${spring.redis.host}:3306/jfrm?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    #username: root
+    #password: password
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+
+    ## 1、hikari
+    #type: com.zaxxer.hikari.HikariDataSource # spring2.0以上默认就是hikari，这行配置可以省略
+    #hikari:
+    #  #连接池名称，默认HikariPool-1
+    #  pool-name: KevinHikariPool
+    #  auto-commit: true
+    #  #最大连接数，小于等于0会被重置为默认值10；大于零小于1会被重置为minimum-idle的值
+    #  maximum-pool-size: 16
+    #  #连接超时时间:毫秒，小于250毫秒，否则被重置为默认值30秒
+    #  connection-timeout: 60000
+    #  #最小空闲连接，默认值10，小于0或大于maximum-pool-size，都会重置为maximum-pool-size
+    #  minimum-idle: 4
+    #  #空闲连接超时时间，默认值600000（10分钟），大于等于max-lifetime且max-lifetime>0，会被重置为0；不等于0且小于10秒，会被重置为10秒。
+    #  # 只有空闲连接数大于最大连接数且空闲时间(毫秒)超过该值，才会被释放
+    #  idle-timeout: 500000
+    #  #连接最大存活时间.不等于0且小于30秒，会被重置为默认值30分钟.设置应该比mysql设置的超时时间短
+    #  max-lifetime: 1200000
+    #  connection-test-query: SELECT 1
+
+    ## 2、druid
+    #type: com.alibaba.druid.pool.DruidDataSource
+    #druid:
+    #  # pool strategy
+    #  initial-size: 1
+    #  max-active: 20
+    #  min-idle: 1
+    #  max-wait: 60000
+    #  query-timeout: 90
+    #  pool-prepared-statements: false
+    #  max-pool-prepared-statement-per-connection-size: 20
+    #
+    #  # idle strategy
+    #  test-while-idle: true
+    #  min-evictable-idle-time-millis: 300000
+    #  time-between-eviction-runs-millis: 60000
+    #
+    #  validationQuery: SELECT 'x'
+    #  test-on-return: false
+    #  test-on-borrow: false
+    #  use-global-data-source-stat: true
+    #  filters: stat,wall,slf4j
+    #  filter:
+    #    stat:
+    #      merge-sql: false
+    #      db-type: mysql
+    #      slow-sql-millis: 2000
+    #      log-slow-sql: true
+    #    wall:
+    #      db-type: mysql
+    #      config:
+    #        drop-table-allow: false
+    #        delete-allow: true
+    #      enabled: true
+    #  stat-view-servlet:
+    #    url-pattern: /druid/*
+    #    login-username: admin
+    #    login-password: admin
+    #    reset-enable: false
+    #    enabled: true
+
+    dynamic: # mybatis-plus 多数据源配置
+      hikari:
+        is-auto-commit: true
+        max-pool-size: 16 # 最大连接池数量
+        connection-timeout: 60000
+        minimum-idle: 4 # 最小空闲连接
+        idle-timeout: 500000
+        max-lifetime: 1200000
+        connection-test-query: SELECT 1
+      #druid: # Druid 【连接池】相关的全局配置
+      #  initial-size: 1 # 初始连接数
+      #  min-idle: 1 # 最小连接池数量
+      #  max-active: 20 # 最大连接池数量
+      #  max-wait: 600000 # 配置获取连接等待超时的时间，单位：毫秒
+      #  time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒
+      #  min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位：毫秒
+      #  max-evictable-idle-time-millis: 900000 # 配置一个连接在池中最大生存的时间，单位：毫秒
+      #  validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效
+      #  test-while-idle: true
+      #  test-on-borrow: false
+      #  test-on-return: false
+      primary: master
+      datasource:
+        master:
+          url: jdbc:mysql://127.0.0.1:3306/jfrm?useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true # MySQL Connector/J 8.X 连接的示例
+          #          url: jdbc:mysql://127.0.0.1:3306/jfrm?useSSL=true&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true # MySQL Connector/J 5.X 连接的示例
+          #          url: jdbc:postgresql://127.0.0.1:5432/jfrm # PostgreSQL 连接的示例
+          #          url: jdbc:oracle:thin:@127.0.0.1:1521:xe # Oracle 连接的示例
+          #          url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=jfrm;SelectMethod=cursor;encrypt=false;rewriteBatchedStatements=true;useUnicode=true;characterEncoding=utf-8 # SQLServer 连接的示例
+          #          url: jdbc:dm://127.0.0.1:5236?schema=jfrm # DM 连接的示例
+          #          url: jdbc:kingbase8://127.0.0.1:54321/jfrm  # 人大金仓 KingbaseES 连接的示例
+          #          url: jdbc:postgresql://127.0.0.1:5432/postgres # OpenGauss 连接的示例
+          username: root
+          password: password
+        slave: # 模拟从库，可根据自己需要修改
+          lazy: true # 开启懒加载，保证启动速度
+          url: jdbc:mysql://127.0.0.1:3306/jfrm?useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+          username: root
+          password: password
