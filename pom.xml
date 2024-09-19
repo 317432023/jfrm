@@ -15,8 +15,11 @@
         <module>jfrm-module/jfrm-module-system</module>
         <module>jfrm-module/jfrm-module-member</module>
         <module>jfrm-module/jfrm-module-system/jfrm-module-system-api</module>
+        <module>jfrm-framework/jfrm-common</module>
         <module>jfrm-framework/jfrm-spring-boot-starter-test</module>
-        <module>jfrm-framework/jfrm-spring-boot-starter-security</module>
+        <module>jfrm-framework/jfrm-spring-boot-starter-redis</module>
+        <module>jfrm-framework/jfrm-spring-boot-starter-mybatis</module>
+        <module>jfrm-framework/jfrm-spring-boot-starter-web</module>
     </modules>
 
     <properties>

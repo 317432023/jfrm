@@ -28,7 +28,7 @@
         <knife4j.version>4.5.0</knife4j.version>
         <springdoc.version>1.7.0</springdoc.version>
         <!-- 数据库 -->
-        <jsqlparser.version>4.7</jsqlparser.version>
+        <jsqlparser.version>4.9</jsqlparser.version>
         <pagehelper-spring-boot-starter.version>2.1.0</pagehelper-spring-boot-starter.version>
         <mybatis.version>3.5.16</mybatis.version>
         <mybatis-plus.version>3.5.7</mybatis-plus.version>
@@ -404,11 +404,6 @@
             <dependency>
                 <groupId>com.soaringloong</groupId>
                 <artifactId>jfrm-spring-boot-starter-web</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.soaringloong</groupId>
-                <artifactId>jfrm-spring-boot-starter-security</artifactId>
                 <version>${revision}</version>
             </dependency>
 
