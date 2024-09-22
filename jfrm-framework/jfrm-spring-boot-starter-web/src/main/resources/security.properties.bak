@@ -1,0 +1,29 @@
+
+# 静态资源(不经过security拦截)
+security.resources=\
+  /,\
+  /index.html,\
+  /**/*.html,\
+  /**/*.js,\
+  /**/*.css,\
+  /**/*.jpg,/**/*.jpeg,/**/*.png,/**/*.gif,/**/*.ico,\
+  /upload/**,\
+  /**/asset/**,/**/static/**,\
+  /css/**,/js/**,/images/**,/fonts/**,\
+  /favicon.ico
+
+# 允许匿名访问的资源
+security.permits=\
+  /h2-console/**,\
+  /login,\
+  /captcha,\
+  /getInfo,\
+  /serverTime,\
+  /upload,/upload_base64_img,/get_upload_info,\
+  /api/**
+
+# 不允许匿名(需要认证但不需要授权的资源)
+security.needAuths=\
+  /doc.html, /swagger-ui.html,\
+  /loadRoutes,\
+  /loadMenus
