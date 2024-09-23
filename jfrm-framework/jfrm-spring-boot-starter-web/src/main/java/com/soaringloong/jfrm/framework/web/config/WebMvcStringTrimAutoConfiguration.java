@@ -31,6 +31,11 @@ import java.io.IOException;
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
 public class WebMvcStringTrimAutoConfiguration {
 
+	/**
+	 * 去除两端空格后 空串是否转换为 null
+	 */
+	private static final boolean emptyAsNull = false;
+
 	@ControllerAdvice
 	public static class ControllerStringParamTrimConfig {
 
@@ -40,8 +45,8 @@ public class WebMvcStringTrimAutoConfiguration {
 		 */
 		@InitBinder
 		public void initBinder(WebDataBinder binder) {
-			// 参数：去除两端空格后 空串是否转换为 null true：null false：""
-			StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+			// 参数：去除两端空格后 空串是否转换为 null
+			StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(emptyAsNull);
 			// 为 String 类对象注册编辑器
 			binder.registerCustomEditor(String.class, stringTrimmerEditor);
 		}
@@ -59,7 +64,7 @@ public class WebMvcStringTrimAutoConfiguration {
 					@Override
 					public String deserialize(JsonParser jsonParser, DeserializationContext ctx) throws IOException {
 						String res = StringUtils.trimWhitespace(jsonParser.getValueAsString());
-						return StrUtil.isBlank(res) ? null : res;
+						return StrUtil.isBlank(res) ? (emptyAsNull?null:"") : res;
 					}
 				});
 	}
