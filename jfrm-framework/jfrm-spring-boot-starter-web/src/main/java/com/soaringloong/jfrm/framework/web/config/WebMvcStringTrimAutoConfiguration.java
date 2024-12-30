@@ -64,7 +64,7 @@ public class WebMvcStringTrimAutoConfiguration {
 					@Override
 					public String deserialize(JsonParser jsonParser, DeserializationContext ctx) throws IOException {
 						String res = StringUtils.trimWhitespace(jsonParser.getValueAsString());
-						return StrUtil.isBlank(res) ? (emptyAsNull?null:"") : res;
+						return StrUtil.isBlank(res) ? (emptyAsNull ? null : "") : res;
 					}
 				});
 	}

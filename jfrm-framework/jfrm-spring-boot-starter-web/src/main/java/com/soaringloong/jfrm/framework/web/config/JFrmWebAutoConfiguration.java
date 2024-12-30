@@ -82,9 +82,11 @@ public class JFrmWebAutoConfiguration implements WebMvcConfigurer {
 		registry.addResourceHandler("/profile/**").addResourceLocations("file:" + RuoYiConfig.getProfile() + "/");
 
 		// knife4j+swagger
-		registry.addResourceHandler("/doc.html", "/swagger-ui.html")
-			.addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:/META-INF/resources/");
 		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+		registry.addResourceHandler("/v3/**").addResourceLocations("classpath:/META-INF/resources/v3/");
 		registry.addResourceHandler("/swagger-ui/**")
 			.addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
 			.setCacheControl(CacheControl.maxAge(5L, TimeUnit.HOURS).cachePublic());
@@ -105,7 +107,10 @@ public class JFrmWebAutoConfiguration implements WebMvcConfigurer {
 	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new GlobalInterceptor()).addPathPatterns("/**");
+		registry.addInterceptor(new GlobalInterceptor())
+			.addPathPatterns("/**")
+			// 对swagger放行
+			.excludePathPatterns("/swagger**/**", "/webjars/**", "/v3/**", "/v2/**", "/swagger-ui.html", "/doc.html");
 	}
 
 	@Override
